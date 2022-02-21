@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/b42ca6d8d1.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js" integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" media = 'screen' href="styles.css">
+    <title>Invoice App</title>
+</head>
+<body class = 'h-screen w-screen flex flex-col items-center bg-gray-300'>
+
+    <!-- download button wrapper -->
+    <div class = 'w-screen flex justify-center mt-8 mb-8'>
+        <button class = 'h-16 w-36 flex justify-center shadow-lg items-center text-white bg-green-600 hover:bg-green-500 rounded-lg' id='download'>Download as PDF</button>
+    </div>
+    <!-- invoice wrapper container -->
+    <div class = 'flex flex-col w-8/12 bg-white shadow mb-10 items-center' id = 'invoice'> 
+       <!-- invoice header -->
+        <div class = 'flex flex-col w-11/12 mb-10 max-h-1/4'>
+            <!-- heading and logo-->
+            <div class = 'flex justify-between items-center'>
+                <!-- heading -->
+                <div class = 'flex flex-col w-2/3'>
+
+                    <!-- header -->
+                    <div class = 'flex items-center'>
+                        <p class = 'h-6 w-10 bg-red-500 text-white rounded flex justify-center items-center'>Due</p>
+                        <h3 class = 'text-2xl ml-6 flex justify-center items-center text-gray-700'>Invoice</h3>
+                    </div>
+
+                    <!-- invoice message -->
+                    <div class="flex items-center flex-1 mt-8">
+                        <input type="text" 
+                        name = 'invoice-message' 
+                        class="flex-1 border-solid border-gray-400 border text-sm p-1 outline-none"
+                        value = "Thank you for your purchase. Timely payment will be appreciated."
+                        >
+                    </div>
+                </div>
+
+                <!-- logo -->
+                <div class = 'h-2/3 w-1/4 border-dashed border-2 border flex flex-col justify-center items-center'>
+                    <img src="your_logo.png" alt="your_logo" class = 'w-auto h-3/4'>
+                </div>
+            </div>
+
+            <!-- dropdowns and invoice no -->
+            <div class="flex justify-between">
+                <!-- invoice no -->
+                <div class = 'flex flex-col w-32'>
+                    <p class = 'font-semibold text-gray-700'>Invoice No.</p>
+                    <div class="flex border border-gray-300">
+                        <div class = 'flex justify-center items-center bg-gray-200 w-8'>
+                            #
+                        </div>
+                        <div class = 'flex items-center w-full'>
+                            <input type="text" name = 'invoice-number' value = 'INV-694'
+                            class = 'flex items-center h-full w-full outline-none p-1'>
+                        </div>
+                    </div>
+                    
+
+
+                </div>
+
+                <!-- language dropdown and currency-->
+                <div class = 'flex items-center'>
+                    <!-- language -->
+                    <div class = 'flex flex-col w-32 mr-4'>
+                        <p class = 'font-semibold text-gray-700'>Language</p>
+                        <div class = 'flex items-center'>
+                            <select name="language" id="language" 
+                            class = 'flex items-center h-full outline-none p-1 bg-gray-200 border border-gray-300'>
+                                <option value="English (US)">English (US)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- currency -->
+                    <div class = 'flex flex-col w-60'>
+                        <p class = 'font-semibold text-gray-700'>Currency</p>
+                        <div class = 'flex items-center'>
+                            <select name="currency" id="currency-select" 
+                            class = 'flex items-center h-full outline-none p-1 bg-gray-200 border border-gray-300 w-full'>
+                                <option value="GBP">British Pound - GBP</option>
+                                <option value="USD">US Dollar - USD</option>
+                                <option value="INR">Indian Rupee - INR</option>
+                                <option value="AUD">Australian Dollar - AUD</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                
+                
+            </div>
+
+        </div>
+
+        <!-- divider -->
+        <hr class ='h-px bg-gray-300 w-11/12'>  
+
+
+
+       <!-- invoice body -->
+       <div class="flex justify-between w-11/12 mt-10 mb-10">
+        <!-- addresses -->
+        <div class="flex flex-col">
+            <!-- from -->
+            <div class="flex flex-col">
+                <p class="font-semibold text-gray-700">From</p>
+                <!-- your address -->
+                <div class = 'flex flex-col'>
+                    <p class = 'text-sm'>Your Business Inc.</p>
+                    <p class = 'text-sm'>Your Address</p>
+                    <p class = 'text-sm'>City & ZIP, Your Country</p>
+                </div>
+            </div>
+            <!-- to -->
+            <div class = 'flex flex-col mt-5'>
+                <p class = 'font-semibold text-gray-700'>To</p>
+                <textarea name="to-address" id="to-address" cols="35" rows="4" 
+                class="resize-none border border-solid border-gray-300 bg-gray-100 outline-none p-1 flex justify-start">
+Example Inc.
+80 Mortimer Street
+London W1W 7FE
+United Kingdom
+                </textarea>
+            </div>
+        </div>
+
+        <!-- date, invoice due and purchase order no -->
+        <div class="flex flex-col">
+            <!-- date -->
+            <div class="flex flex-col w-60">
+                <p class = 'text-gray-700 font-semibold'>Date</p>
+                <input type="date" value = '2016-04-23' name = 'date-selector' class='border border-gray-300' >
+            </div>
+            <!-- invoice due -->
+            <div class = 'flex flex-col w-60 mt-3'>
+                <p class = 'text-gray-700 font-semibold'>Invoice Due</p>
+                <div class = 'flex items-center'>
+                        <select name="invoice-due" id="invoice-due" 
+                        class = 'flex items-center w-full h-full outline-none p-1 bg-gray-200 border border-gray-300'>
+                            <option value="5">After 5 days</option>
+                            <option value="10">After 10 days</option>
+                            <option value="15">After 15 days</option>
+                            <option value="20">After 20 days</option>
+                            <option value="30">After 30 days</option>
+                        </select>
+                </div>
+            </div>
+
+            <!-- purchase order number -->
+            <div class = 'flex flex-col w-60 mt-3'>
+                <p class = 'text-gray-700 font-semibold'>Purchase Order Number</p>
+                <input type="text" name='purchase-order-no' value = 'PO-123' class="w-full outline-none border border-gray-300 p-2">
+            </div>
+
+        </div>
+
+       </div>
+
+       <!-- divider -->
+       <hr class ='h-px bg-gray-300 w-11/12'>  
+
+
+       <!-- invoice footer -->
+       <div class = 'flex flex-col w-11/12 mt-10 mb-10'>
+           <!-- table -->
+        <div class = 'flex w-full justify-between items-center'>
+            <p class = 'text-gray-700 w-1/2 font-semibold'>Name</p>
+            <div class = 'flex justify-between items-center w-1/2'>
+                <div class ='flex justify-end w-1/2'>
+                    <p class = 'text-gray-700 font-semibold flex justify-end mr-20'>Quantity</p>
+                    <p class = 'text-gray-700 font-semibold flex justify-end'>Rate</p>
+                </div>
+                <div class ='flex justify-end w-1/2'>
+                    <p class = 'text-gray-700 font-semibold flex justify-end'>Amount</p>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class = 'flex w-full mb-4' id = 'table-1'>
+            <!-- name -->
+            <div class="flex flex-col w-1/2">
+                
+                <!-- divider -->
+                <hr class ='h-px bg-gray-300 w-full mb-2'>  
+                <!-- item area -->
+                <div class = 'flex flex-col h-32'>
+                    <input type="text" name = 'item-area' id = 'item-selling-1' value = 'Item you are selling' class = 'h-3/4 w-full border border-gray-300'>
+                    <div class='flex w-full h-1/4' data-html2canvas-ignore="true">
+                        <button type = 'button' id = 'copy-1' class="h-full w-14 bg-gray-200 flex justify-center items-center text-sm border border-gray-300">
+                            <i class="fa-regular fa-copy text-gray-400"></i>
+                        </button>
+                        <button type = 'button' class="h-full w-14 bg-gray-200 flex justify-center items-center text-sm border border-gray-300">
+                            <i class="fa-regular fa-calendar text-gray-400"></i>
+                        </button>
+                        <button type = 'button' class="h-full w-14 bg-gray-200 flex justify-center items-center text-sm border border-gray-300">
+                            <i class="fa-solid fa-link text-gray-400"></i>
+                        </button>
+                        <button type = 'button' class="h-full w-14 bg-gray-200 flex justify-center items-center text-sm border border-gray-300">
+                            <i class="fa-solid fa-tag text-gray-400"></i>
+                        </button>
+                        <div class = 'h-full w-14'></div>
+                        <div class = 'h-full w-14'></div>
+                        <button type = 'button' class="h-full w-14 bg-gray-200 flex justify-center items-center text-sm border border-gray-300">
+                            <i class="fa-solid fa-receipt text-gray-400"></i>
+                        </button>
+                        <button type = 'button' class="h-full w-14 bg-gray-200 flex justify-center items-center text-sm border border-gray-300">
+                            <i class="fa-solid fa-cart-shopping text-gray-400"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- quantity, rate, amount -->
+            <div class = 'flex w-1/2'>
+                <!-- quantity -->
+                <div class = 'flex flex-col items-end w-1/4'>
+                    
+                    <!-- divider -->
+                    <hr class ='h-px bg-gray-300 w-full mb-2'>  
+                    <input type="number" name = 'quantity' id = 'quantity-1' value = 100 class = 'border border-gray-300 flex justify-end p-1 w-4/5 outline-none'>
+                </div>
+                <!-- rate -->
+                <div class = 'flex flex-col items-end w-1/4'>
+                    
+                    <!-- divider -->
+                    <hr class ='h-px bg-gray-300 w-full mb-2'>  
+                    <input type="text" name = 'rate' id = 'rate-1' value = '10.00' class = 'border border-gray-300 flex justify-end p-1 w-4/5 outline-none'>
+                </div>
+
+                <!-- amount -->
+                <div class = 'flex flex-col items-end w-2/4 min-w-fit'>
+                   
+                    <!-- divider -->
+                    <hr class ='h-px bg-gray-300 w-full mb-2'>  
+                    <div class = 'flex justify-between items-center w-4/5 ml-2 min-w-fit border border-gray-300 h-8 p-1'>
+                        <!-- currency type -->
+                        <p class = 'text-md currency-type'>GBP</p>
+                        <!-- amount for item -->
+                        <p class = 'text-md' id = 'item-value-1'>1000.00</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+         <!-- divider -->
+         <hr class ='h-0.5 bg-gray-300 w-full mb-4'>  
+         
+         <div class = 'flex w-full'>
+            <!-- new line button area -->
+            <div class='flex w-1/2' data-html2canvas-ignore="true">
+                <button type="button" class='h-8 w-20 bg-[#405f91]/75 rounded-sm text-white text-sm justify-center items-center new-line-btn'>New
+                    Line</button>
+            </div>
+            <!-- totalling area -->
+            <div class = 'flex flex-col w-1/2 p-3'>
+                <!-- sub total -->
+                <div class = 'flex justify-between items-center mb-4'>
+                    <p class = 'text-gray-700'>Sub Total</p>
+                    <p class = 'text-gray-700' id = 'sub-total'>1000</p>
+                </div>
+                <!-- divider -->
+                <hr class ='h-px bg-gray-300 w-full mb-4'>  
+
+                <!-- tax area -->
+                <div class = 'flex justify-between items-center mb-4'>
+                    <!-- tax -->
+                    <div class = 'flex items-center border border-gray-300 h-9 w-1/2 sm:w-2/3'>
+                        <p class = 'flex justify-center items-center h-full w-4/5'>Value Added Tax</p>
+                        <input type="text" name = 'tax' id = 'tax-input' value = '20' class = 'flex justify-center items-center p-2 h-full w-2/5 border-l border-gray-300 outline-none'>
+                        <span class="mr-2">%</span>
+                    </div>
+                    <p class = 'text-gray-700 ml-2' id = 'tax-value'>200.00</p>
+                </div>
+
+                <!-- divider -->
+                <hr class='h-px bg-gray-300 w-full mb-4'>
+
+                <!-- total amount area -->
+                <div class = 'flex flex-col'>
+                    <div class = 'flex justify-between' id='page-break'>
+                        <p class = 'text-gray-700 font-bold'>Total (<span class = 'currency-type'>GBP</span>)</p>
+                        <p class = 'text-gray-700 font-bold total-amount' >1,200.00</p>
+                    </div>
+                    <div class = 'flex mt-3 border border-red-500 border-4 rounded'>
+                        <div class = 'flex h-12 w-3/12 justify-center text-white text-sm items-center bg-red-500'>
+                            Total Due
+                        </div>
+                        <div class = 'flex justify-between items-center w-9/12 p-2'>
+                            <p class = 'text-gray-700 font-bold currency-type'>GBP</p>
+                            <p class = 'text-gray-700 font-bold total-amount'>1,200.00</p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+         </div>
+
+
+       </div>
+    </div>
+    <script type = 'module' src="script.js"></script>
+</body>
+</html>
