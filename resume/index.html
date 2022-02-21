@@ -8,9 +8,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
     <link rel="stylesheet" href="styles.css">
     <script src="https://kit.fontawesome.com/b42ca6d8d1.js" crossorigin="anonymous"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js" integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
+
+    <button class = 'download'>Download <i class = 'fa-solid fa-download'></i></button>
     <div class="container" id = 'scalable-wrapper'>
 
         <!-- HEADER -->
@@ -181,23 +183,21 @@
     </div> 
 </body>
 
-<!-- <script>
-    let outer = document.querySelector('body'),
-        wrapper = document.querySelector('.container'),
-        maxWidth  = outer.clientWidth,
-        maxHeight = outer.clientHeight;
-        window.addEventListener("resize", resize);
-        resize();
-        function resize(){
-            let scale,
-            width = window.innerWidth,
-            height = window.innerHeight,
-            isMax = width >= maxWidth && height >= maxHeight;
-            scale = Math.min(width/maxWidth, height/maxHeight);
-            outer.style.transform = isMax?'':'scale(' + scale + ')';
-            wrapper.style.width = isMax?'':maxWidth * scale;
-            wrapper.style.height = isMax?'':maxHeight * scale;
+<script>
+        // pdf options
+        const options = {
+        margin: 0,
+        filename: 'Karan-Bhatia (resume).pdf',
+        image: { type: 'jpeg', quality: 0.99 },
+        html2canvas: { scale: 5 },
+        pagebreak: { mode: 'avoid-all' },
+        jsPDF: { unit: 'mm', format: 'a3'},
         }
-</script> -->
+        let downloadBtn = document.querySelector('.download');
+        downloadBtn.addEventListener('click', function(){
+            let source = document.querySelector('.container').innerHTML;
+            html2pdf(source, options);
+        });
+</script>
 
 </html>
