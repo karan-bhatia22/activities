@@ -47,7 +47,10 @@ function calculateTotal(){
 }
 // adding event listeners to all quantity, rate for change
 function handleQuantityChange(quantity, rate, amount){
-    quantity.attr('value', quantity.val());
+    if(quantity.val() && quantity.val() >= 0)
+        quantity.attr('value', quantity.val());
+    else 
+    quantity.val(0);
     let num = parseFloat(quantity.val()) * parseFloat(rate.val());
     num = (Math.round(num*100)/100).toFixed(2);
     amount.text(num);
@@ -55,8 +58,19 @@ function handleQuantityChange(quantity, rate, amount){
     calculateTax();
     calculateTotal();
 }
+
+function isNumeric(str) {
+    if (typeof str != "string") return false // we only process strings!  
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+           !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}  
+
+
 function handleRateChange(quantity, rate, amount){
-    rate.attr('value', rate.val());
+    if(rate.val() == "" || rate.val() == " " || parseFloat(rate.val()) < 0 || !isNumeric(rate.val())) // if rate is not defined or negative or is not numeric
+        rate.val('0');
+    else 
+        rate.attr('value', rate.val());
     let num = parseFloat(quantity.val()) * parseFloat(rate.val());
     num = (Math.round(num*100)/100).toFixed(2);
     amount.text(num);
@@ -66,12 +80,9 @@ function handleRateChange(quantity, rate, amount){
 }
 
 function handleCopy(tableId){
-    console.log("table to copy:" + tableId);
     let lastTable = $('div[id^="table"]:last');
-    console.log("last table:" , lastTable);
     let idToClone = tableId;
     let num = parseInt( lastTable.prop("id").match(/\d+/g), 10 ) +1;
-    console.log("new id: " + num);
     $('#table-' + idToClone).clone().prop('id', 'table-' + num).insertAfter('div[id^="table"]:last');
     makeNecessaryIdChanges(idToClone);
     let newQuantity = $('#quantity-' + String(tables.length));
@@ -126,12 +137,12 @@ function addEventListenersToTables(){
 
 function makeNecessaryIdChangesAndClearValues(){
     tables = $('div[id^="table"]');
-    clonedTable = $('div[id^="table"]:last');
+    let clonedTable = $('div[id^="table"]:last');
     clonedTable.find('#quantity-' + (tables.length - 1)).attr('id', 'quantity-' + tables.length);
-    clonedTable.find('#quantity-' + (tables.length)).attr('value', 0);
+    clonedTable.find('#quantity-' + (tables.length)).val(0);
 
     clonedTable.find('#rate-' + (tables.length - 1)).attr('id', 'rate-' + tables.length);
-    clonedTable.find('#rate-' + (tables.length)).attr('value', '0');
+    clonedTable.find('#rate-' + (tables.length)).val('0');
 
     clonedTable.find('#item-value-' + (tables.length - 1)).attr('id', 'item-value-' + tables.length);
     clonedTable.find('#item-value-' + (tables.length)).text('0');
@@ -145,7 +156,7 @@ function makeNecessaryIdChangesAndClearValues(){
 
 function makeNecessaryIdChanges(id){
     tables = $('div[id^="table"]');
-    clonedTable = $('div[id^="table"]:last');
+    let clonedTable = $('div[id^="table"]:last');
     clonedTable.find('#quantity-' + (id)).attr('id', 'quantity-' + tables.length);
     clonedTable.find('#rate-' + (id)).attr('id', 'rate-' + tables.length);
     clonedTable.find('#item-value-' + (id)).attr('id', 'item-value-' + tables.length);
@@ -156,7 +167,10 @@ function makeNecessaryIdChanges(id){
 
 function calculateTax(){
     let subtotalAmt = parseFloat(subTotal.text());
-    let rate = parseFloat(taxInput.val());
+    let rate;
+    if(!taxInput.val() || parseFloat(taxInput.val()) < 0 || !isNumeric(taxInput.val()))
+        taxInput.val('0');
+    rate = parseFloat(taxInput.val());
     let taxAmt = parseFloat((subtotalAmt * rate)/100).toFixed(2);
     tax.text(taxAmt);
 }
