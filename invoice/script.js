@@ -15,6 +15,28 @@ $(document).ready(function () {
     let invoiceDue = $('#invoice-due');
     let dateSelector = $('input[name="date-selector"]');
     let purchaseOrder = $('input[name="purchase-order-no"]');
+    const currencyConversionRates = {
+        'INR':{
+            'GBP': 0.009858044164,
+            'USD': 0.01340123291,
+            'AUD': 0.01852537977
+        },
+        'GBP':{
+            'INR': 101.4400000004,
+            'USD': 1.3600000001,
+            'AUD': 1.8800000001
+        },
+        'USD':{
+            'INR': 74.6200000191,
+            'GBP': 0.7352941176,
+            'AUD': 1.3799999999
+        },
+        'AUD':{
+            'INR': 53.9800000008,
+            'GBP': 0.5319148936,
+            'USD': 0.7246376812
+        }
+    }
     // pdf options
     const options = {
         margin: 7,
@@ -253,11 +275,8 @@ $(document).ready(function () {
             $("option[value= " + $(this).val() + "]").attr('selected', true).siblings().removeAttr("selected");
             $(this).attr('value', currentCurrency);
             currencyType.text($(this).val());
-            let query = previousCurrency + '_' + currentCurrency;
+            let conversionRate = currencyConversionRates[previousCurrency][currentCurrency];
             previousCurrency = currentCurrency; // update the previous currency
-            const res = await fetch(`https://free.currconv.com/api/v7/convert?q=${query}&compact=ultra&apiKey=e0667daac0b689c2e8cf`);
-            const resObj = await res.json();
-            let conversionRate = resObj[query];
             for (let i = 0; i < tables.length; i++) {
                 let rate = $('#rate-' + String(i + 1));
                 let quantity = $('#quantity-' + String(i + 1));
